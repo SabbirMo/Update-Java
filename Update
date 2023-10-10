@@ -1,0 +1,62 @@
+package simple.finalassignement;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
+
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
+
+public class UpdateController  implements Initializable {
+
+    @FXML
+    private TextField employeeID;
+
+    @FXML
+    private TextField employeeName;
+
+    @FXML
+    private TextField employeeDepartment;
+
+    @FXML
+    private TextField employeeSalary;
+
+    @FXML
+    void okUpdateButton() {
+
+        String id = employeeID.getText();
+        String name = employeeName.getText();
+        String departments = employeeDepartment.getText();
+        String salary = employeeSalary.getText();
+
+        String department = departments.toUpperCase();
+
+        String jdbcUrl = "jdbc:mysql://localhost/employee_management";
+        String username = "root";
+        String password = "sabbir";
+
+        String updateQuery = "update employeelist set id = '"+id+"', name = '"+name+"', department = '"+department+"', salary = '"+salary+"' where id = '"+id+"' ";
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            preparedStatement.execute();
+
+            System.out.println("Update successful");
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Update page");
+    }
+}
